@@ -1,4 +1,7 @@
 'use strict'
+
+const { has } = require("@11ty/eleventy/src/TemplateCache");
+
 // Implementa la clase LinkedList
 // tiene metodos `add`, `remove`, y `search`
 // add: Agrega un nuevo nodo en el final de la lista
@@ -83,11 +86,33 @@ LinkedList.prototype.search = function(value){
 //    - Retornar dicho valor.
 
 function HashTable() {
-this.arreglo = [];
-this.numbBuckets = 35;
+this.buckets = [];
+this.numBuckets = 35;
 }
 
-HashTable.prototype.hashkey
+HashTable.prototype.hash = function(key){
+  let contador = 0
+  for (let i = 0; i < key.length; i++){
+    contador += key.charCodeAt(i);
+  }
+  return contador % this.numBuckets;
+}
+HashTable.prototype.set = function(key,valor){
+  if(typeof key !== "string") throw new TypeError("Keys must be strings")
+  let indice = this.hash(key);
+  if(this.buckets[indice] === undefined){
+    this.buckets[indice] = {}
+}
+  this.buckets[indice][key] = valor
+}
+HashTable.prototype.get = function(key){
+  let indice = this.hash(key);
+  return this.buckets[indice][key];
+}
+HashTable.prototype.hasKey = function(key){
+  let indice = this.hash(key);
+  return this.buckets[indice].hasOwnProperty(key);
+}
 
 
 // No modifiquen nada debajo de esta linea
