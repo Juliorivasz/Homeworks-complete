@@ -17,15 +17,20 @@ const {
 var countArray = function(array) {
     // Tu código aca:
     let sum=0;
-    for (let i = 0; i < array.length; i++){
+    for (let i = 0; i < array.length; i++) {
         if(Array.isArray(array[i])){
-            sum+=countArray(array[i])
+            //si es un arreglo vamos a recorrerlo
+            sum+=countArray(array[i])// sum= sum + countArray(array[i])
         }else{
             sum+= array[i]
-        }
+        }        
     }
     return sum
 }
+
+
+
+
 
 
 // Implementar la función countProps: a partir de un objeto en el cual cada propiedad puede contener
@@ -44,19 +49,19 @@ var countArray = function(array) {
 // countProps(obj)--> Deberia devolver 10 ya que el objeto inicial tiene 3 propiedades, pero a su vez
 // dentro de a tenemos 3 propiedades mas, luego a3 tiene otras 3 y por ultimo c tiene una extra.
 // Propiedades: a, a1, a2, a3, f, a, c, o, b, c --> 10 en total
-
+//count=1
 var countProps = function(obj) {
     // Tu código aca:
-    let count=0
-    for(let prop in obj) {
-        count++
-        if(typeof obj[prop]=== "object" && !Array.isArray(obj[prop])){
-            count+=countProps(obj[prop])
-        }
-            
+let count=0
+for(let prop in obj) {
+    count++
+    if(typeof obj[prop]=== "object" && !Array.isArray(obj[prop])){
+        count+=countProps(obj[prop])
     }
-    
-    return count
+        
+}
+
+return count
 }
 
 
@@ -64,25 +69,26 @@ var countProps = function(obj) {
 // aquellos valores que no puedan castearse a numeros por 'Kiricocho' y devolver la cantidad de cambios que hizo
 // Aclaracion: si el valor del nodo puede castearse a número NO hay que reemplazarlo
 // Ejemplo 1:
-//    Suponiendo que la lista actual es: Head --> [1] --> ['2'] --> [false] --> ['Franco']
+//    Suponiendo que la lista actual es: Head --> [1] --> ['2'] --> ["false"] --> ['Kiricocho']--->null
+// Number('Franco')=>NaN
 //    lista.changeNotNumbers();
 //    Ahora la lista quedaría: Head --> [1] --> ['2'] --> [false] --> ['Kirikocho] y la función debería haber devuelto el valor 1
 
 LinkedList.prototype.changeNotNumbers = function(){
     // Tu código aca:
-        let count=0;
-        let current= this.head
-        while(current){
-            //Array.isArray  isNaN()
-            if(isNaN(Number(current.value))){
-                current.value="Kiricocho"
-                count++
-            }
-            current=current.next
+    let count=0;
+    let current= this.head
+    while(current){
+        //Array.isArray  isNaN()
+        if(isNaN(Number(current.value))){
+            current.value="Kiricocho"
+            count++
         }
-    
-    return count
+        current=current.next
     }
+
+return count
+}
 
 
 // Implementar la función mergeQueues que a partir de dos queues recibidas por parametro
@@ -90,26 +96,26 @@ LinkedList.prototype.changeNotNumbers = function(){
 // Ejemplo:
 // - queueOne: [7,3,5]
 // - queueTwo: [2,4,6]
-// mergeQueues(queueOne, queueTwo) --> [7,2,3,4,5,6]
+// mergeQueues(queueOne, queueTwo) --> [7,2,3,4, 5,6]
 // IMPORTANTE: NO son arreglos sino que son Queues.
 
 var mergeQueues = function(queueOne, queueTwo) {
     // Tu código aca:
-    let newQueue= new Queue()
-    while(queueOne.size()|| queueTwo.size()){ 
-        let elemOne= queueOne.dequeue()
-        let elemTwo= queueTwo.dequeue()
-        if(elemOne) newQueue.enqueue(elemOne)
-        if(elemTwo) newQueue.enqueue(elemTwo)    
-    }
-    return newQueue
+let newQueue= new Queue()
+while(queueOne.size()|| queueTwo.size()){ 
+    let elemOne= queueOne.dequeue()
+    let elemTwo= queueTwo.dequeue()
+    if(elemOne) newQueue.enqueue(elemOne)
+    if(elemTwo) newQueue.enqueue(elemTwo)    
+}
+return newQueue
 }
 
 
 // Implementar la funcion closureMult que permita generar nuevas funciones que representen
 // las tablas de multiplicación de distintos numeros
 // Ejemplo: 
-// - var multByFour = closureMult(4);
+// - var multByFour = closureMult(4);=> function (num=>num*4)
 // - multByFour(2) --> 8 (2 * 4)
 // - multByFour(5) --> 20
 // - var multBySix = closureMult(6);
@@ -117,6 +123,7 @@ var mergeQueues = function(queueOne, queueTwo) {
 
 var closureMult = function(multiplier) {
     // Tu código aca:
+
     return function(num){
         return num*multiplier
     }
@@ -130,11 +137,45 @@ BinarySearchTree.prototype.sum = function() {
     if(this.left) sum+=this.left.sum()    
     if(this.right) sum+=this.right.sum()
    return sum
+        
 }
 
+// Ejercicio B.
+// Implementar una funcion que retorne true o false si el numero pasado por parametro es palindromo.
+// Controlar que el numero pasado por parametro tengas mas de tres cifras, si el nro pasado tiene 2 o menos cifras
+// o es negativo devolver null.
+// Palindromo es una expresion que se lee igual de derecha a izquierda o viceversa.
+// Ejemplo de numeros palindromos: 1001, 252, 2002, 2222, 9889.
+//                                 i1 j
+function isPalindrome(number) { 
+    // Tu código aca: 
+    // if(number<0) return null
+    // let str=""+number// number.toString()
+    // let i=0
+    // let j=str.length-1
+
+    // while(i<j){
+    //     if(str[i]!==str[j]) return false
+    //     i++;
+    //     j--;
+    // }
+    // return true
+    if(number<0) return null
+    let str=""+number// ""+ 5=> "5"
+    if(str.length>1){
+    let left=str[0]
+    let right=str[str.length-1]
+    if(left!== right) return false
+    return isPalindrome(str.slice(1, str.length-1))
+}
+return true
+    } 
+
+        
 module.exports = {
     countArray,
     countProps,
     mergeQueues,
-    closureMult
+    closureMult,
+    isPalindrome
 }
